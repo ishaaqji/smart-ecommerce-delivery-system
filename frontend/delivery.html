@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Delivery Dashboard</h2>
+<div id="orders"></div>
+
+<script>
+const API = "http://localhost:3000";
+
+async function loadOrders() {
+  const res = await fetch(API + '/deliveries');
+  const data = await res.json();
+
+  let html = "";
+  data.forEach(o => {
+    html += `<p>
+      Order: ${o.product} → 
+      Partner: ${o.deliveryPartner.name}
+    </p>`;
+  });
+
+  document.getElementById('orders').innerHTML = html;
+}
+
+loadOrders();
+</script>
+
+</body>
+</html>
