@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Store</title>
+  <style>
+    body { font-family: Arial; background:#f5f5f5; }
+    .card {
+      background:#fff;
+      padding:15px;
+      margin:10px;
+      border-radius:10px;
+      box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    }
+    button {
+      background:#28a745;
+      color:white;
+      border:none;
+      padding:8px 12px;
+      border-radius:5px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🛒 Smart Store</h2>
+<div id="products"></div>
+
+<script>
+const API = "http://localhost:3000";
+
+async function loadProducts() {
+  const res = await fetch(API + '/products');
+  const data = await res.json();
+
+  let html = "";
+  data.forEach(p => {
+    html += `<div class="card">
+      <h3>${p.name}</h3>
+      <p>₹${p.price}</p>
+      <button onclick="order('${p.name}')">Buy</button>
+    </div>`;
+  });
+
+  document.getElementById('products').innerHTML = html;
+}
+
+async function order(name) {
+  await fetch(API + '/order', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      product: name,
+      lat: 17.39,
+      lng: 78.48
+    })
+  });
+
+  alert("Order placed 🚀");
+}
+
+loadProducts();
+</script>
+
+</body>
+</html>
